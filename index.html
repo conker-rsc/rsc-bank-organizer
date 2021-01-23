@@ -420,15 +420,15 @@
     <h2>Features</h2>
     <ul id="features">
       <li>Drag and drop items to sort items</li>
-      <li>Hover over items to see the item name</li>
+      <li>Hover over items to see the item's name and ID</li>
       <li>Right click items to turn the background red</li>
       <ul>
         <li>Good for tracking what you have</li>
         <li>Items highlighted red will be removed if "Remove Selected" button is pressed</li>
       </ul>
-      <li>Import order from RSC+</li>
-      <li>Export order to RSC+</li>
-      <li>Add and remove items from grid</li>
+      <li>Import order from RSC+ generated CSV file</li>
+      <li>Export order to RSC+ compatible CSV file</li>
+      <li>Add and remove items from the bank grid</li>
       <ul><li>Can press enter in text field to add item</li></ul>
     </ul>
   </section>
@@ -603,7 +603,6 @@
         $('#bankGrid').children('li').children('img').get(i).title = itemNames[csvData[0][i]] + " (" + csvData[0][i] + ")";
       }      
     }
-    var bankItemsA;
     function exportFile() {
       confirmLeave = false;
       var bankItems = $('#bankGrid').children('li').children('img').map(function () {
@@ -611,10 +610,8 @@
         return s.substring(0,s.length-4)
       }).get()
       
-      bankItemsA = bankItems;
       download($.csv.fromArrays([bankItems]), $("#usernameInput").val() + "-rscBankLayout.csv", "text/plain");
     }
-    
     
     $("#itemIDInput").on('keyup', function (event) {
       if (event.keyCode === 13) { // enter key (either of them)
@@ -637,7 +634,5 @@
       });
     });
   </script>
-
-
 </body>
 </html>
