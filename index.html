@@ -129,7 +129,7 @@
     <h1>RSC Bank Organizer</h1>
   </header>
   <section>
-    <h2>Version 2021.01</h2>
+    <h2>Version 2021.02</h2>
     <ul id="bankGrid" class="sortable grid">
       <!-- Food -->
       <li id="slot1" oncontextmenu="changeColor(this);return false;"><img src="images/358.png" title="Raw trout (358)"></img></li>
@@ -520,15 +520,15 @@
           } else {
               var data = null;
               var file = evt.target.files[0];
-              if (evt.target.value.includes("-rscBankLayout.csv")) {
+              if (evt.target.value.includes("_rscplus_bank.csv")) {
                 var i;
-                for (i = evt.target.value.length - 18; i > 0; i--) {
-                  var s = evt.target.value.substring(i + 1, evt.target.value.length - 18);
+                for (i = evt.target.value.length - 17; i > 0; i--) {
+                  var s = evt.target.value.substring(i + 1, evt.target.value.length - 17);
                   if (s.includes("\\") || s.includes("/")) {
                     break;
                   }
                 }
-                $("#usernameInput").val(evt.target.value.substring(i + 2, evt.target.value.length - 18));
+                $("#usernameInput").val(evt.target.value.substring(i + 2, evt.target.value.length - 17));
               }
               evt.target.value = ''; // so that 'change' event will still trigger if user re-parses the same file
               var reader = new FileReader();
@@ -610,7 +610,7 @@
         return s.substring(0,s.length-4)
       }).get()
       
-      download($.csv.fromArrays([bankItems]), $("#usernameInput").val() + "-rscBankLayout.csv", "text/plain");
+      download($.csv.fromArrays([bankItems]), $("#usernameInput").val() + "_rscplus_bank.csv", "text/plain");
     }
     
     $("#itemIDInput").on('keyup', function (event) {
