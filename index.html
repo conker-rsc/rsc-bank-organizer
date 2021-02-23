@@ -597,11 +597,19 @@
         }
       }
     }
+    var globalCsvData;
     function importFile(csvData) {
-      for (var i = 0; i < 240 && i < csvData[0].length; i++) {
+      globalCsvData = csvData;
+      var i;
+      for (i = 0; i < 240 && i < csvData[0].length; i++) {
         $('#bankGrid').children('li').children('img').get(i).src = "images/" + csvData[0][i] + ".png";
         $('#bankGrid').children('li').children('img').get(i).title = itemNames[csvData[0][i]] + " (" + csvData[0][i] + ")";
-      }      
+      }
+      while (i < 192) { // can store extra items on page 5 if you wish
+        $('#bankGrid').children('li').children('img').get(i).src = "images/blank.png";
+        $('#bankGrid').children('li').children('img').get(i).title = "";
+        i++;        
+      }
     }
     function exportFile() {
       confirmLeave = false;
@@ -609,8 +617,29 @@
         var s = $(this).attr('src').substring(7);
         return s.substring(0,s.length-4)
       }).get()
+
+      if (globalCsvData == null) {
+        globalCsvData = [[],null,null];
+      }
       
-      download($.csv.fromArrays([bankItems]), $("#usernameInput").val() + "_rscplus_bank.csv", "text/plain");
+      var amountsLine;
+      if (globalCsvData[1] == null) {
+        amountsLine = ["No Amounts Specified"];
+      } else { // rearrange Amounts according to new positions...
+        amountsLine = new Array(globalCsvData[1].length).fill(0);
+        for (var i = 0; i < 240 && i < globalCsvData[0].length && i < globalCsvData[1].length; i++) {
+          for (var j = 0; j < bankItems.length; j++) {
+            if (bankItems[i] == globalCsvData[0][j]) {
+              amountsLine[i] = globalCsvData[1][j];
+            }
+          }
+        }
+      }
+      if (globalCsvData[2] == null) {
+        globalCsvData[2] = [Date.now(),"\"RSC Bank Organizer\""];
+      }
+      
+      download($.csv.fromArrays([bankItems, amountsLine, globalCsvData[2]]), $("#usernameInput").val() + "_rscplus_bank.csv", "text/plain");
     }
     
     $("#itemIDInput").on('keyup', function (event) {
